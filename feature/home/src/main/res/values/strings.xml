@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home_title">Home</string>
+    <string name="app_name">News Stream</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search news…</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="news_image">News Image</string>
+    <string name="breaking_news">Breaking News</string>
+    <string name="recommended_for_you">Recommended for You</string>
+
+    <!-- Categories -->
+    <string name="category_all">All</string>
+    <string name="category_technology">Technology</string>
+    <string name="category_business">Business</string>
+    <string name="category_sports">Sports</string>
+    <string name="category_science">Science</string>
+    <string name="category_health">Health</string>
+
+    <!-- Bottom Sheet Filter -->
+    <string name="filter_news">Filter News</string>
+    <string name="clear_all">Clear All</string>
+    <string name="categories">Categories</string>
+    <string name="category_for_you">For You</string>
+    <string name="category_tech">Tech</string>
+    <string name="category_politics">Politics</string>
+    <string name="category_lifestyle">Lifestyle</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sort_newest_first">Newest First</string>
+    <string name="sort_most_popular">Most Popular</string>
+    <string name="sort_most_relevant">Most Relevant</string>
+    <string name="apply_filters">Apply Filters</string>
 </resources>

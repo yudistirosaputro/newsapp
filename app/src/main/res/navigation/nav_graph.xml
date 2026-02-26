@@ -16,7 +16,6 @@
         android:name="com.blank.feature.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
-
         <deepLink app:uri="app://newsapp/home" />
     </fragment>
 

@@ -6,6 +6,10 @@ plugins {
 
 android {
     namespace = "com.blank.feature.home"
+    
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -13,4 +17,7 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
 }
