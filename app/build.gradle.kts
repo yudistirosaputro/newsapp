@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core"))
     implementation(project(":feature:home"))
     implementation(project(":feature:splash"))
     implementation(project(":navigation"))
@@ -46,6 +47,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation(libs.androidx.splashscreen)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
