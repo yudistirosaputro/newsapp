@@ -19,4 +19,16 @@
         <deepLink app:uri="app://newsapp/home" />
     </fragment>
 
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.blank.feature.explore.ExploreFragment"
+        android:label="Explore"
+        tools:layout="@layout/fragment_explore" />
+
+    <fragment
+        android:id="@+id/bookmarksFragment"
+        android:name="com.blank.feature.bookmark.BookmarksFragment"
+        android:label="Bookmarks"
+        tools:layout="@layout/fragment_bookmarks" />
+
 </navigation>

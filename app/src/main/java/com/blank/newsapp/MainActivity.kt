@@ -41,12 +41,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.splashFragment -> {
-                    binding.bottomNavigation.visibility = View.GONE
-                }
-                else -> {
-                    binding.bottomNavigation.visibility = View.VISIBLE
-                }
+                R.id.splashFragment -> binding.bottomNavigation.visibility = View.GONE
+                else -> binding.bottomNavigation.visibility = View.VISIBLE
             }
         }
     }

@@ -4,6 +4,6 @@
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_explore">Explore</string>
-    <string name="nav_bookmarks">Saved</string>
+    <string name="nav_bookmarks">Bookmarks</string>
     <string name="nav_settings">Settings</string>
 </resources>
