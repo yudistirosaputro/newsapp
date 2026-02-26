@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -11,9 +12,6 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -24,3 +22,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "newsapp"
 include(":app")
+include(":core")
+include(":data")
+include(":domain")
+include(":feature:home")
+include(":feature:splash")
+include(":navigation")
