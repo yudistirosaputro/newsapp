@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.androidx.navigation.safeargs)
 }
 
 android {
@@ -34,6 +35,8 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":feature:home"))
     implementation(project(":feature:splash"))
+    implementation(project(":feature:explore"))
+    implementation(project(":feature:bookmark"))
     implementation(project(":navigation"))
     implementation(project(":data"))
     implementation(project(":domain"))

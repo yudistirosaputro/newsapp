@@ -102,6 +102,7 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 buildlogic-android-application = { id = "buildlogic.android.application" }
 buildlogic-android-library = { id = "buildlogic.android.library" }
 buildlogic-android-feature = { id = "buildlogic.android.feature" }

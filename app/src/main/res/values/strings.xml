@@ -6,4 +6,8 @@
     <string name="nav_explore">Explore</string>
     <string name="nav_bookmarks">Bookmarks</string>
     <string name="nav_settings">Settings</string>
+
+    <!-- Article Detail -->
+    <string name="news_image">News Image</string>
+    <string name="bookmark">Bookmark</string>
 </resources>
