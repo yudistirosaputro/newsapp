@@ -2,8 +2,8 @@ package com.blank.feature.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.blank.feature.home.databinding.ItemNewsArticleBinding
 import com.blank.feature.home.model.NewsItem
@@ -11,7 +11,7 @@ import com.blank.feature.home.model.NewsItem
 class RecommendedNewsAdapter(
     private val onItemClick: (NewsItem) -> Unit,
     private val onBookmarkClick: (NewsItem) -> Unit,
-) : ListAdapter<NewsItem, RecommendedNewsAdapter.ViewHolder>(DiffCallback()) {
+) : PagingDataAdapter<NewsItem, RecommendedNewsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemNewsArticleBinding.inflate(
@@ -23,7 +23,7 @@ class RecommendedNewsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { holder.bind(it) }
     }
 
     inner class ViewHolder(
@@ -34,13 +34,13 @@ class RecommendedNewsAdapter(
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    onItemClick(getItem(position))
+                    getItem(position)?.let { onItemClick(it) }
                 }
             }
             binding.btnBookmark.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    onBookmarkClick(getItem(position))
+                    getItem(position)?.let { onBookmarkClick(it) }
                 }
             }
         }

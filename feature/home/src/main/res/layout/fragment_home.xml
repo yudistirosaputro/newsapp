@@ -113,6 +113,20 @@
                         android:text="@string/category_business" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chipEntertainment"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category_entertainment" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGeneral"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category_general" />
+
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/chipSports"
                         style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"

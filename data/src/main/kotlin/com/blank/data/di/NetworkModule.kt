@@ -3,6 +3,7 @@ package com.blank.data.di
 import android.content.Context
 import com.blank.data.BuildConfig
 import com.blank.data.remote.api.NewsApiService
+import com.blank.data.mapper.ArticleMapper
 import com.blank.data.remote.interceptor.ApiKeyInterceptor
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -13,6 +14,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import com.blank.data.remote.helper.NetworkResponseAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -77,6 +79,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -85,5 +88,11 @@ object NetworkModule {
     @Singleton
     fun provideNewsApiService(retrofit: Retrofit): NewsApiService {
         return retrofit.create(NewsApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleMapper(): ArticleMapper {
+        return ArticleMapper()
     }
 }

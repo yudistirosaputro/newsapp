@@ -13,4 +13,7 @@ data class NewsItem(
     val timeAgo: String,
     val category: String,
     val isBookmarked: Boolean = false,
+    val urlToImage: String = "",
+    val url: String = "",
+    val author: String = "",
 ) : Parcelable
