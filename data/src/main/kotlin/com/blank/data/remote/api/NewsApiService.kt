@@ -1,9 +1,9 @@
 package com.blank.data.remote.api
 
 import com.blank.data.remote.dto.ArticleDto
-import com.blank.data.remote.dto.BaseResponse
-import com.blank.data.remote.dto.ErrorResponse
-import com.blank.data.remote.helper.NetworkResponse
+import com.blank.data.base.BaseResponse
+import com.blank.data.base.ErrorResponse
+import com.blank.data.helper.NetworkResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

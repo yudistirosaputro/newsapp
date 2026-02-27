@@ -1,4 +1,4 @@
-package com.blank.data.remote.helper
+package com.blank.data.helper
 
 import okhttp3.ResponseBody
 import retrofit2.Call

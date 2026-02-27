@@ -5,7 +5,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.blank.data.remote.api.NewsApiService
 import com.blank.data.mapper.ArticleMapper
-import com.blank.data.remote.paging.NewsPagingSource
+import com.blank.data.base.BasePagingSource
+import com.blank.data.paging.NewsPagingSource
 import com.blank.domain.model.ArticleModel
 import com.blank.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +24,7 @@ class NewsRepositoryImpl @Inject constructor(
     ): Flow<PagingData<ArticleModel>> {
         return Pager(
             config = PagingConfig(
-                pageSize = NewsPagingSource.PAGE_SIZE,
+                pageSize = BasePagingSource.PAGE_SIZE,
                 enablePlaceholders = false,
             ),
             pagingSourceFactory = {

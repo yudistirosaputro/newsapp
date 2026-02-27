@@ -1,4 +1,4 @@
-package com.blank.data.remote.helper
+package com.blank.data.helper
 
 import retrofit2.Call
 import retrofit2.CallAdapter

@@ -1,4 +1,4 @@
-package com.blank.data.remote.dto
+package com.blank.data.base
 
 import com.google.gson.annotations.SerializedName
 

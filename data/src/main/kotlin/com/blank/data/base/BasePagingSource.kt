@@ -1,49 +1,46 @@
-package com.blank.data.remote.paging
+package com.blank.data.base
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blank.data.remote.api.NewsApiService
-import com.blank.data.mapper.ArticleMapper
-import com.blank.data.remote.helper.NetworkResponse
-import com.blank.domain.model.ArticleModel
+import com.blank.data.helper.NetworkResponse
 
-class NewsPagingSource(
-    private val newsApiService: NewsApiService,
-    private val articleMapper: ArticleMapper,
-    private val country: String?,
-    private val category: String?,
-    private val query: String?,
-) : PagingSource<Int, ArticleModel>() {
+/**
+ * Generic PagingSource that handles [com.blank.data.helper.NetworkResponse] boilerplate.
+ *
+ * Subclasses only provide:
+ * - [executeApi] — the Retrofit call for a given page/size
+ * - [mapItems]  — DTO list → domain model list
+ */
+abstract class BasePagingSource<DTO : Any, Model : Any> : PagingSource<Int, Model>() {
 
     companion object {
-        private const val STARTING_PAGE = 1
-        const val PAGE_SIZE = 20
+        const val STARTING_PAGE = 1
+        const val PAGE_SIZE = 5
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleModel> {
+    abstract suspend fun executeApi(
+        page: Int,
+        pageSize: Int,
+    ): NetworkResponse<BaseResponse<DTO>, ErrorResponse>
+
+    abstract fun mapItems(dtos: List<DTO>): List<Model>
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Model> {
         val page = params.key ?: STARTING_PAGE
-        return when (
-            val response = newsApiService.getTopHeadlines(
-                country = country,
-                category = category,
-                query = query,
-                pageSize = params.loadSize,
-                page = page,
-            )
-        ) {
+        return when (val response = executeApi(page, params.loadSize)) {
             is NetworkResponse.Success -> {
                 val body = response.data
-                val articles = articleMapper.map(body.articles)
+                val items = mapItems(body.articles)
                 val totalResults = body.totalResults
 
-                val nextKey = if (articles.isEmpty() || page * params.loadSize >= totalResults) {
+                val nextKey = if (items.isEmpty() || page * params.loadSize >= totalResults) {
                     null
                 } else {
                     page + 1
                 }
 
                 LoadResult.Page(
-                    data = articles,
+                    data = items,
                     prevKey = if (page == STARTING_PAGE) null else page - 1,
                     nextKey = nextKey,
                 )
@@ -67,7 +64,7 @@ class NewsPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, ArticleModel>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Model>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
