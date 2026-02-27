@@ -59,7 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 navigateToDetail(newsItem)
             },
             onBookmarkClick = { newsItem ->
-                Toast.makeText(requireContext(), "Bookmark: ${newsItem.title}", Toast.LENGTH_SHORT).show()
+                viewModel.toggleBookmark(newsItem)
             }
         )
 
@@ -68,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 navigateToDetail(newsItem)
             },
             onBookmarkClick = { newsItem ->
-                Toast.makeText(requireContext(), "Bookmark: ${newsItem.title}", Toast.LENGTH_SHORT).show()
+                viewModel.toggleBookmark(newsItem)
             }
         )
 

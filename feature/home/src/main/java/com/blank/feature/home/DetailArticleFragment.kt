@@ -1,9 +1,11 @@
 package com.blank.feature.home
 
 import android.os.Bundle
-import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.blank.core.base.BaseFragment
+import com.blank.core.extensions.collectWithLifecycle
 import com.blank.feature.home.databinding.FragmentDetailArticleBinding
 import com.blank.feature.home.model.NewsItem
 import dagger.hilt.android.AndroidEntryPoint
@@ -11,6 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailArticleFragment :
     BaseFragment<FragmentDetailArticleBinding>(FragmentDetailArticleBinding::inflate) {
+
+    private val viewModel: DetailArticleViewModel by viewModels()
 
     private lateinit var newsItem: NewsItem
 
@@ -21,10 +25,17 @@ class DetailArticleFragment :
             @Suppress("DEPRECATION")
             arguments?.getParcelable(ARG_NEWS_ITEM)
         } ?: throw IllegalArgumentException("NewsItem argument is required")
-        
+
+        viewModel.setArticle(newsItem)
         setupToolbar()
         setupViews()
         setupClickListeners()
+    }
+
+    override fun observeState() {
+        collectWithLifecycle(viewModel.isBookmarked) { isBookmarked ->
+            updateBookmarkIcon(isBookmarked)
+        }
     }
 
     private fun setupToolbar() {
@@ -44,31 +55,22 @@ class DetailArticleFragment :
             tvSource.text = newsItem.source
             tvTime.text = newsItem.timeAgo
             chipCategory.text = newsItem.category
-            ivArticleImage.setImageResource(R.drawable.ic_placeholder)
-            updateBookmarkIcon()
+            ivArticleImage.load(newsItem.urlToImage) {
+                placeholder(R.drawable.ic_placeholder)
+                error(R.drawable.ic_placeholder)
+                crossfade(true)
+            }
         }
     }
 
     private fun setupClickListeners() {
         binding.fabBookmark.setOnClickListener {
-            toggleBookmark()
+            viewModel.toggleBookmark()
         }
     }
 
-    private fun toggleBookmark() {
-        newsItem = newsItem.copy(isBookmarked = !newsItem.isBookmarked)
-        updateBookmarkIcon()
-
-        val message = if (newsItem.isBookmarked) {
-            "Added to bookmarks"
-        } else {
-            "Removed from bookmarks"
-        }
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun updateBookmarkIcon() {
-        val iconRes = if (newsItem.isBookmarked) {
+    private fun updateBookmarkIcon(isBookmarked: Boolean) {
+        val iconRes = if (isBookmarked) {
             R.drawable.ic_bookmark_filled
         } else {
             R.drawable.ic_bookmark_outline

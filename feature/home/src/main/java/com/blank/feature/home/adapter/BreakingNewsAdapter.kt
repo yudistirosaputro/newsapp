@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.blank.feature.home.R
 import com.blank.feature.home.databinding.ItemBreakingNewsBinding
 import com.blank.feature.home.model.NewsItem
 
@@ -54,13 +56,17 @@ class BreakingNewsAdapter(
 
                 btnBookmark.setImageResource(
                     if (item.isBookmarked) {
-                        com.blank.feature.home.R.drawable.ic_bookmark_filled
+                        R.drawable.ic_bookmark_filled
                     } else {
-                        com.blank.feature.home.R.drawable.ic_bookmark_outline
+                        R.drawable.ic_bookmark_outline
                     }
                 )
 
-                ivNewsImage.setImageResource(com.blank.feature.home.R.drawable.ic_placeholder)
+                ivNewsImage.load(item.urlToImage) {
+                    placeholder(R.drawable.ic_placeholder)
+                    error(R.drawable.ic_placeholder)
+                    crossfade(true)
+                }
             }
         }
     }

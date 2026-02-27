@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.blank.feature.home.R
 import com.blank.feature.home.databinding.ItemNewsArticleBinding
 import com.blank.feature.home.model.NewsItem
 
@@ -52,18 +54,19 @@ class RecommendedNewsAdapter(
                 tvTime.text = item.timeAgo
                 chipCategory.text = item.category
 
-                // Set bookmark icon based on state
                 btnBookmark.setImageResource(
                     if (item.isBookmarked) {
-                        com.blank.feature.home.R.drawable.ic_bookmark_filled
+                        R.drawable.ic_bookmark_filled
                     } else {
-                        com.blank.feature.home.R.drawable.ic_bookmark_outline
+                        R.drawable.ic_bookmark_outline
                     }
                 )
 
-                // TODO: Load image with Glide or Coil
-                // For now, use placeholder
-                ivNewsImage.setImageResource(com.blank.feature.home.R.drawable.ic_placeholder)
+                ivNewsImage.load(item.urlToImage) {
+                    placeholder(R.drawable.ic_placeholder)
+                    error(R.drawable.ic_placeholder)
+                    crossfade(true)
+                }
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.blank.data.di
 
+import com.blank.data.repository.BookmarkRepositoryImpl
 import com.blank.data.repository.NewsRepositoryImpl
+import com.blank.domain.repository.BookmarkRepository
 import com.blank.domain.repository.NewsRepository
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindNewsRepository(
         newsRepositoryImpl: NewsRepositoryImpl,
     ): NewsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBookmarkRepository(
+        bookmarkRepositoryImpl: BookmarkRepositoryImpl,
+    ): BookmarkRepository
 }
