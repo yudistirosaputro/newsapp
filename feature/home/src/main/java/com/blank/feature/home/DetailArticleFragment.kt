@@ -42,8 +42,8 @@ class DetailArticleFragment :
         binding.apply {
             tvTitle.text = newsItem.title
             tvContent.text = newsItem.content
+            tvAuthorName.text = newsItem.author
             tvMetaInfo.text = "${newsItem.source} • ${newsItem.timeAgo}"
-
             ivArticleImage.load(newsItem.urlToImage) {
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)

@@ -71,7 +71,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(FragmentExploreBind
     private fun setupSearch() = with(binding) {
         etSearch.doAfterTextChanged { text ->
             val query = text?.toString().orEmpty()
-            viewModel.setQuery(query)
+            searchByQuery(query)
             btnClear.visibility = if (query.isNotEmpty()) View.VISIBLE else View.GONE
 
             if (query.isEmpty()) {
@@ -82,9 +82,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(FragmentExploreBind
         etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = etSearch.text?.toString().orEmpty()
-                if (query.isNotEmpty()) {
-                    viewModel.setQuery(query)
-                }
+                searchByQuery(query)
                 true
             } else {
                 false
@@ -104,6 +102,26 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(FragmentExploreBind
         }
     }
 
+    private fun searchByQuery(query: String) {
+        when {
+            viewModel.isOffline.value -> {
+                handleOfflineView()
+            }
+            query.isNotEmpty() -> {
+                viewModel.setQuery(query)
+            }
+        }
+    }
+
+    private fun handleOfflineView() = with(binding) {
+        emptyStateView.gone()
+        noResultsStateView.visible()
+        tvNoResultsTitle.text = getString(R.string.offline_message)
+        tvNoResultsSubtitle.text =
+            getString(R.string.offline_search_subtitle)
+        btnClearSearch.gone()
+        btnBrowseTrending.gone()
+    }
     private fun handleLoadState(refresh: LoadState) = with(binding) {
         val hasQuery = viewModel.query.value.isNotEmpty()
 
@@ -129,13 +147,7 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(FragmentExploreBind
                     tvResultsHeader.gone()
 
                     if (isOffline) {
-                        emptyStateView.gone()
-                        noResultsStateView.visible()
-                        tvNoResultsTitle.text = getString(R.string.offline_message)
-                        tvNoResultsSubtitle.text =
-                            getString(R.string.offline_search_subtitle)
-                        btnClearSearch.gone()
-                        btnBrowseTrending.gone()
+                        handleOfflineView()
                     } else {
                         noResultsStateView.visible()
                         emptyStateView.gone()

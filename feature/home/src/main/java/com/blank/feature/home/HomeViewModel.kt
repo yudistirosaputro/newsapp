@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.blank.core.base.BaseViewModel
 import com.blank.core.model.NewsItem
+import com.blank.core.util.TimeUtil
 import com.blank.domain.repository.ConnectivityObserver
 import com.blank.domain.usecase.GetBookmarkedUrlsUseCase
 import com.blank.domain.usecase.GetTopHeadlinesUseCase
@@ -47,7 +48,7 @@ class HomeViewModel @Inject constructor(
                         description = article.description,
                         content = article.content,
                         source = article.sourceName,
-                        timeAgo = article.publishedAt,
+                        timeAgo = TimeUtil.fromIsoString(article.publishedAt),
                         category = CATEGORY,
                         urlToImage = article.urlToImage,
                         url = article.url,

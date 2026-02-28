@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.blank.core.base.BaseViewModel
 import com.blank.core.base.UiState
 import com.blank.core.model.NewsItem
+import com.blank.core.util.TimeUtil
 import com.blank.domain.usecase.GetBookmarksUseCase
 import com.blank.domain.usecase.ToggleBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,7 @@ class BookmarksViewModel @Inject constructor(
                                 description = article.description,
                                 content = article.content,
                                 source = article.sourceName,
-                                timeAgo = article.publishedAt,
+                                timeAgo = TimeUtil.fromIsoString(article.publishedAt),
                                 category = "",
                                 urlToImage = article.urlToImage,
                                 url = article.url,
