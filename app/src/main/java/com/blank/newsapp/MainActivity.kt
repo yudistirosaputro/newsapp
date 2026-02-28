@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.blank.core.base.BaseActivity
@@ -22,15 +23,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     override fun onViewReady(savedInstanceState: Bundle?) {
-        setupWindowInsets()
         setupBottomNavigation()
     }
 
     private fun setupWindowInsets() {
-        // Edge-to-edge is enabled, let each fragment handle insets via fitsSystemWindows
-        // This listener prevents the default consumption of insets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            // Don't consume insets at the root level, let children handle them
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            
+            // Apply bottom padding to the container to handle system navigation bar
+            binding.bottomNavigationContainer.updatePadding(bottom = navigationBars.bottom)
+            
             insets
         }
     }
