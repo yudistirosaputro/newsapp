@@ -11,6 +11,7 @@ import com.blank.core.base.BaseFragment
 import com.blank.core.extensions.collectWithLifecycle
 import com.blank.core.extensions.gone
 import com.blank.core.extensions.visible
+import com.blank.feature.home.adapter.NewsLoadStateAdapter
 import com.blank.feature.home.adapter.RecommendedNewsAdapter
 import com.blank.feature.home.databinding.FragmentHomeBinding
 import com.blank.core.model.NewsItem
@@ -67,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun handleRefreshState(refresh: LoadState) = with(binding) {
-        swipeRefreshLayout.isRefreshing = refresh is LoadState.Loading
+        swipeRefreshLayout.isRefreshing = refresh is LoadState.Loading && recommendedNewsAdapter.itemCount > 0
 
         when (refresh) {
             is LoadState.Loading -> {
@@ -75,6 +76,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     progressIndicator.visible()
                     recommendedNewsSection.gone()
                     tvEmptyState.gone()
+                } else {
+                    progressIndicator.gone()
                 }
             }
 
@@ -128,7 +131,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun setupRecyclerViews() {
         binding.rvRecommendedNews.apply {
-            adapter = recommendedNewsAdapter
+            // Combine main adapter with LoadStateAdapter for pagination loading
+            adapter = recommendedNewsAdapter.withLoadStateFooter(
+                footer = NewsLoadStateAdapter { recommendedNewsAdapter.retry() }
+            )
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
             isNestedScrollingEnabled = false

@@ -10,4 +10,7 @@
     <!-- Article Detail -->
     <string name="news_image">News Image</string>
     <string name="bookmark">Bookmark</string>
+
+    <!-- Loading -->
+    <string name="retry">Retry</string>
 </resources>

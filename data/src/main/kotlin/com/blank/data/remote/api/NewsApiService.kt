@@ -23,7 +23,5 @@ interface NewsApiService {
         @Query("q") query: String,
         @Query("pageSize") pageSize: Int? = null,
         @Query("page") page: Int? = null,
-        @Query("language") language: String? = "en",
-        @Query("sortBy") sortBy: String? = "publishedAt",
     ): NetworkResponse<BaseResponse<ArticleDto>, ErrorResponse>
 }
