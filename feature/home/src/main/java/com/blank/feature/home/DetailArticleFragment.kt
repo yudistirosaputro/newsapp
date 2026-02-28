@@ -1,6 +1,9 @@
 package com.blank.feature.home
 
 import android.os.Bundle
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -28,8 +31,27 @@ class DetailArticleFragment :
         } ?: throw IllegalArgumentException("NewsItem argument is required")
 
         viewModel.setArticle(newsItem)
+        setupWindowInsets()
         setupViews()
         setupClickListeners()
+    }
+
+    private fun setupWindowInsets() {
+        // Handle window insets for Android 16+ edge-to-edge
+        ViewCompat.setOnApplyWindowInsetsListener(binding.topBar) { view, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            // Add top padding for status bar to prevent buttons from being cut
+            view.updatePadding(top = statusBars.top)
+            insets
+        }
+        
+        // Handle bottom insets for the scroll content
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val navigationBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            // Add bottom padding to prevent content from being cut by navigation bar
+            binding.nestedScrollView.updatePadding(bottom = navigationBars.bottom)
+            insets
+        }
     }
 
     override fun observeState() {

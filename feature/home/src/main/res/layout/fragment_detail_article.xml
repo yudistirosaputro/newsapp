@@ -7,6 +7,7 @@
     android:background="?attr/colorSurface">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -51,7 +52,8 @@
                 android:id="@+id/topBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -60,8 +62,12 @@
                     android:id="@+id/btnBack"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/bg_circle_glass"
+                    android:background="@drawable/bg_circle_glass_ripple_solid"
+                    android:elevation="4dp"
+                    android:stateListAnimator="@null"
                     android:src="@drawable/ic_arrow_back"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@android:color/white" />
@@ -78,18 +84,26 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_circle_glass"
+                        android:background="@drawable/bg_circle_glass_ripple_solid"
+                        android:elevation="4dp"
+                        android:stateListAnimator="@null"
                         android:contentDescription="@string/share"
                         android:src="@drawable/ic_share"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:tint="@android:color/white" />
 
                     <ImageButton
                         android:id="@+id/btnBookmark"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/bg_circle_glass"
+                        android:background="@drawable/bg_circle_glass_ripple_solid"
+                        android:elevation="4dp"
+                        android:stateListAnimator="@null"
                         android:contentDescription="@string/bookmark"
                         android:src="@drawable/ic_bookmark_outline"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:tint="@android:color/white" />
 
                 </LinearLayout>

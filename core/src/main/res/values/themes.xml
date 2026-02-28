@@ -40,8 +40,11 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.NewsStream.LargeComponent</item>
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.NewsStream.SmallComponent</item>
 
-        <!-- System Bars -->
+        <!-- System Bars - Edge to Edge support for Android 16+ -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">false</item>
     </style>
 </resources>
