@@ -14,6 +14,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.room.gradlePlugin)
+    implementation(libs.jacoco.gradlePlugin)
 }
 
 gradlePlugin {
@@ -33,6 +34,10 @@ gradlePlugin {
         register("androidRoom") {
             id = "buildlogic.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
+        }
+        register("androidTest") {
+            id = "buildlogic.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
         }
     }
 }

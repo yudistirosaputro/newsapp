@@ -29,6 +29,7 @@ ksp = "2.3.5"
 splashscreen = "1.0.1"
 swiperefreshlayout = "1.1.0"
 coil = "2.7.0"
+jacoco = "0.8.12"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -100,6 +101,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+jacoco-gradlePlugin = { group = "org.jacoco", name = "org.jacoco.core", version.ref = "jacoco" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -115,3 +117,4 @@ buildlogic-android-application = { id = "buildlogic.android.application" }
 buildlogic-android-library = { id = "buildlogic.android.library" }
 buildlogic-android-feature = { id = "buildlogic.android.feature" }
 buildlogic-android-room = { id = "buildlogic.android.room" }
+buildlogic-android-test = { id = "buildlogic.android.test" }

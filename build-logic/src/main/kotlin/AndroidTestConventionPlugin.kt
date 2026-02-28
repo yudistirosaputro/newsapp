@@ -8,24 +8,12 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.tasks.JacocoReport
 
-class AndroidLibraryConventionPlugin : Plugin<Project> {
+class AndroidTestConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply("com.android.library")
             pluginManager.apply("jacoco")
 
             extensions.configure<LibraryExtension> {
-                compileSdk = 36
-
-                defaultConfig {
-                    minSdk = 26
-                }
-
-                compileOptions {
-                    sourceCompatibility = org.gradle.api.JavaVersion.VERSION_21
-                    targetCompatibility = org.gradle.api.JavaVersion.VERSION_21
-                }
-
                 buildTypes {
                     getByName("debug") {
                         enableUnitTestCoverage = true
@@ -49,6 +37,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.findLibrary("mockk-agent-jvm").get())
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("testImplementation", libs.findLibrary("androidx-arch-core-testing").get())
+                add("testImplementation", libs.findLibrary("androidx-paging-testing").get())
             }
         }
     }
@@ -93,6 +82,18 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                     )
                 }
             )
+        }
+
+        tasks.register("jacocoFullReport", JacocoReport::class.java) {
+            group = "verification"
+            description = "Generates full Jacoco coverage report for all modules"
+            
+            dependsOn("testDebugUnitTest")
+
+            reports {
+                xml.required.set(true)
+                html.required.set(true)
+            }
         }
     }
 }
