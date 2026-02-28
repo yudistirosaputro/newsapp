@@ -42,4 +42,5 @@
     <string name="share">Share</string>
     <string name="read_full_article">Read Full Article</string>
     <string name="related_stories">Related Stories</string>
+    <string name="retry">Retry</string>
 </resources>

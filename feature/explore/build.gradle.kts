@@ -21,4 +21,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     implementation(libs.coil)
+
+    testImplementation(libs.androidx.paging.testing)
+    testImplementation("app.cash.turbine:turbine:1.2.0")
 }
