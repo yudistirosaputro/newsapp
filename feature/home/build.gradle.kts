@@ -23,4 +23,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.coil)
     implementation(libs.androidx.swiperefreshlayout)
+
+    testImplementation(libs.androidx.paging.testing)
+    testImplementation("app.cash.turbine:turbine:1.2.0")
 }
