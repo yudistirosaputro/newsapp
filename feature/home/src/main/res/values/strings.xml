@@ -33,6 +33,9 @@
     <string name="sort_most_popular">Most Popular</string>
     <string name="sort_most_relevant">Most Relevant</string>
     <string name="apply_filters">Apply Filters</string>
-    <string name="offline_message">You are offline. Showing cached articles.</string>
+    <string name="offline_message">Offline Mode</string>
     <string name="no_articles">No articles available</string>
+    <string name="refresh">Refresh</string>
+    <string name="offline">Offline</string>
+    <string name="loading_more_news">Loading more news…</string>
 </resources>

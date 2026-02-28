@@ -14,30 +14,26 @@
         android:fitsSystemWindows="true"
         app:elevation="0dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="@string/app_name"
-            app:titleTextAppearance="?attr/textAppearanceDisplaySmall"
-            app:titleTextColor="?attr/colorOnSurface" />
+            android:paddingHorizontal="16dp">
+            <TextView
+                android:id="@+id/tvAppName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/tvOfflineBanner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorErrorContainer"
-        android:gravity="center"
-        android:paddingVertical="8dp"
-        android:text="@string/offline_message"
-        android:textColor="?attr/colorOnErrorContainer"
-        android:textAppearance="?attr/textAppearanceLabelMedium"
-        android:visibility="gone"
-        app:layout_anchor="@id/appBarLayout"
-        app:layout_anchorGravity="bottom"
-        tools:visibility="visible" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -50,23 +46,74 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:paddingBottom="24dp">
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/tvOfflineBanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:layout_margin="16dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="?attr/colorErrorContainer"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="0dp"
+                    tools:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
+
+                        <ImageView
+                            android:id="@+id/ivOfflineIcon"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="@string/offline"
+                            android:src="@drawable/ic_cloud_off"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tint="?attr/colorOnErrorContainer" />
+
+                        <TextView
+                            android:id="@+id/tvOfflineText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@string/offline_message"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorOnErrorContainer"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ivOfflineIcon"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
                 <LinearLayout
                     android:id="@+id/recommendedNewsSection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvOfflineBanner">
 
                     <TextView
+                        android:id="@+id/tvRecommendedTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="24dp"
                         android:text="@string/recommended_for_you"
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textColor="?attr/colorOnSurface" />
@@ -75,7 +122,7 @@
                         android:id="@+id/rvRecommendedNews"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:clipToPadding="false"
                         android:nestedScrollingEnabled="false"
                         android:paddingHorizontal="16dp"
@@ -86,22 +133,64 @@
 
                 <TextView
                     android:id="@+id/tvEmptyState"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="32dp"
                     android:layout_marginTop="48dp"
                     android:gravity="center"
                     android:text="@string/no_articles"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
 
-            </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/loadingMoreContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:paddingVertical="16dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recommendedNewsSection"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progressIndicatorMore"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:indeterminate="true"
+                        app:indicatorColor="?attr/colorPrimary"
+                        app:indicatorSize="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:trackThickness="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvLoadingMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/loading_more_news"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/progressIndicatorMore" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- Loading Indicator -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressIndicator"
         android:layout_width="wrap_content"
