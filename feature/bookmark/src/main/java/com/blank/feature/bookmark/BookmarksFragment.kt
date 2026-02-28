@@ -1,13 +1,78 @@
 package com.blank.feature.bookmark
 
 import android.os.Bundle
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.blank.core.base.BaseFragment
+import com.blank.core.base.UiState
+import com.blank.core.extensions.collectWithLifecycle
+import com.blank.core.extensions.gone
+import com.blank.core.extensions.visible
+import com.blank.core.model.NewsItem
 import com.blank.feature.bookmark.databinding.FragmentBookmarksBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BookmarksFragment : BaseFragment<FragmentBookmarksBinding>(FragmentBookmarksBinding::inflate) {
 
+    private val viewModel: BookmarksViewModel by viewModels()
+    private lateinit var bookmarkAdapter: BookmarkAdapter
+
     override fun onViewReady(savedInstanceState: Bundle?) {
+        setupAdapter()
+        setupRecyclerView()
+    }
+
+    override fun observeState() {
+        collectWithLifecycle(viewModel.bookmarks) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    binding.rvBookmarks.gone()
+                    binding.emptyState.gone()
+                }
+
+                is UiState.Success -> {
+                    binding.rvBookmarks.visible()
+                    binding.emptyState.gone()
+                    bookmarkAdapter.submitList(state.data)
+                }
+
+                is UiState.Empty -> {
+                    binding.rvBookmarks.gone()
+                    binding.emptyState.visible()
+                }
+
+                is UiState.Error -> {
+                    binding.rvBookmarks.gone()
+                    binding.emptyState.visible()
+                }
+            }
+        }
+    }
+
+    private fun setupAdapter() {
+        bookmarkAdapter = BookmarkAdapter(
+            onItemClick = { newsItem -> navigateToDetail(newsItem) },
+            onBookmarkClick = { newsItem -> viewModel.toggleBookmark(newsItem) },
+        )
+    }
+
+    private fun navigateToDetail(newsItem: NewsItem) {
+        val bundle = Bundle().apply {
+            putParcelable(ARG_NEWS_ITEM, newsItem)
+        }
+        findNavController().navigate(R.id.detailArticleFragment, bundle)
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvBookmarks.apply {
+            adapter = bookmarkAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    companion object {
+        private const val ARG_NEWS_ITEM = "newsItem"
     }
 }
