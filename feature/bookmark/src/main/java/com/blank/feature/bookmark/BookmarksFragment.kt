@@ -23,29 +23,28 @@ class BookmarksFragment : BaseFragment<FragmentBookmarksBinding>(FragmentBookmar
         setupAdapter()
         setupRecyclerView()
     }
-
-    override fun observeState() {
+    override fun observeState() = with(binding) {
         collectWithLifecycle(viewModel.bookmarks) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    binding.rvBookmarks.gone()
-                    binding.emptyState.gone()
+                   rvBookmarks.gone()
+                    emptyState.gone()
                 }
 
                 is UiState.Success -> {
-                    binding.rvBookmarks.visible()
-                    binding.emptyState.gone()
+                   rvBookmarks.visible()
+                    emptyState.gone()
                     bookmarkAdapter.submitList(state.data)
                 }
 
                 is UiState.Empty -> {
-                    binding.rvBookmarks.gone()
-                    binding.emptyState.visible()
+                    rvBookmarks.gone()
+                    emptyState.visible()
                 }
 
                 is UiState.Error -> {
-                    binding.rvBookmarks.gone()
-                    binding.emptyState.visible()
+                    rvBookmarks.gone()
+                    emptyState.visible()
                 }
             }
         }

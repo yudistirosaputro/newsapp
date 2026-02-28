@@ -1,7 +1,13 @@
 <resources>
     <string name="bookmarks_title">Bookmarks</string>
-    <string name="no_bookmarks">No bookmarked articles yet</string>
-    <string name="no_bookmarks_subtitle">Articles you bookmark will appear here</string>
+    <string name="no_bookmarks">No bookmarks yet</string>
+    <string name="no_bookmarks_subtitle">Articles you bookmark will appear here for easy access later</string>
     <string name="bookmark">Bookmark</string>
     <string name="news_image">News Image</string>
+    <string name="back">Back</string>
+    <string name="search">Search</string>
+    <string name="more_options">More options</string>
+    <string name="filter_all_items">All Items</string>
+    <string name="filter_global_affairs">Global Affairs</string>
+    <string name="explore_news">Explore News</string>
 </resources>

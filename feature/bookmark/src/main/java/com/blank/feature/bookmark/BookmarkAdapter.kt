@@ -49,8 +49,8 @@ class BookmarkAdapter(
         fun bind(item: NewsItem) {
             binding.apply {
                 tvNewsTitle.text = item.title
-                tvSource.text = item.source
-                tvTime.text = item.timeAgo
+                tvCategory.text = item.category
+                tvReadTime.text = "${item.timeAgo} read"
 
                 ivNewsImage.load(item.urlToImage) {
                     placeholder(com.blank.core.R.drawable.ic_placeholder)
