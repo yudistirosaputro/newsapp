@@ -39,5 +39,9 @@ gradlePlugin {
             id = "buildlogic.android.test"
             implementationClass = "AndroidTestConventionPlugin"
         }
+        register("testAggregator") {
+            id = "buildlogic.test.aggregator"
+            implementationClass = "AndroidTestAggregatorPlugin"
+        }
     }
 }

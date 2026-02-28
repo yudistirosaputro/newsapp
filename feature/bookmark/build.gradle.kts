@@ -21,4 +21,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     implementation(libs.coil)
+
+    testImplementation("app.cash.turbine:turbine:1.2.0")
 }
