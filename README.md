@@ -377,6 +377,11 @@ fun View.invisible()  { visibility = View.INVISIBLE }
 // Toast
 fun Fragment.showToast(message: String, duration: Int = Toast.LENGTH_SHORT)
 
+// Navigation
+fun NavController.navigateDeepLink(uri: String, navOptions: NavOptions? = null)
+fun NavController.navigateWithArgs(@IdRes destinationId: Int, args: Bundle)
+fun <T : Parcelable> NavController.navigateWithParcelable(@IdRes destinationId: Int, key: String, value: T)
+
 // Lifecycle-safe Flow collection
 fun <T> Fragment.collectWithLifecycle(
     flow: Flow<T>,
@@ -389,11 +394,13 @@ fun <T> Fragment.collectWithLifecycle(
 
 ## Navigation Pattern
 
-NewsApp uses **Fragment-based Navigation Component** with a single `nav_graph.xml` defined in `:app`. Feature modules navigate using **deep link URIs** to avoid cross-module `R` class references.
+NewsApp uses **Fragment-based Navigation Component** with a single `nav_graph.xml` defined in `:app`. **All navigation uses deep link URIs** — no action-based navigation between fragments.
 
-### Why Deep Links
+### Why Deep Links Only
 
-In a multi-module setup, `:feature:home` and `:feature:bookmark` or other feature cannot reference each other's generated `R` or navigation action IDs — they have no compile-time dependency on each other. Deep link URIs are plain strings that resolve at runtime through the navigation graph.
+In a multi-module setup, `:feature:home` and `:feature:bookmark` cannot reference each other's generated `R` or navigation action IDs — they have no compile-time dependency on each other. Deep link URIs are plain strings that resolve at runtime through the navigation graph.
+
+Using deep links consistently eliminates cross-module coupling and makes navigation more testable (deep links can be triggered from notifications, external apps, etc.).
 
 ### Deep Link Convention
 
@@ -402,16 +409,36 @@ Deep links follow the pattern: `app://newsapp/{destination}`
 | Destination | URI |
 |---|---|
 | Home | `app://newsapp/home` |
+| Explore | `app://newsapp/explore` |
+| Bookmarks | `app://newsapp/bookmarks` |
+| Detail | `app://newsapp/detail` |
 
-### Navigating with a Deep Link
+### Navigation Extensions (`:core`)
+
+The `:core` module provides extension functions on `NavController`:
 
 ```kotlin
-// In SplashFragment — navigate to HomeFragment without knowing its module
-val request = NavDeepLinkRequest.Builder
-    .fromUri(Uri.parse("app://newsapp/home"))
-    .build()
-findNavController().navigate(request)
+// Simple navigation (no arguments) — uses deep link
+findNavController().navigateDeepLink("app://newsapp/home")
+
+// Navigation with Parcelable argument — uses resource ID
+findNavController().navigateWithParcelable(
+    destinationId = R.id.detailArticleFragment,
+    key = "newsItem",  // matches argument name in nav_graph.xml
+    value = newsItem,
+)
+
+// Navigation with full Bundle
+findNavController().navigateWithArgs(
+    destinationId = R.id.detailArticleFragment,
+    args = bundle,
+)
 ```
+
+**Why two approaches?**
+- Deep links work for simple navigation and enable external URLs/testability
+- Resource IDs are required for Parcelable arguments (deep links can't carry complex objects)
+- Since `com.blank.core.R.id.*` is already accessible to all feature modules, using it for detail navigation doesn't add new coupling
 
 ### Registering a Deep Link in nav_graph.xml
 
@@ -422,9 +449,23 @@ findNavController().navigate(request)
     android:name="com.blank.feature.home.HomeFragment">
     <deepLink app:uri="app://newsapp/home" />
 </fragment>
+
+<fragment
+    android:id="@+id/detailArticleFragment"
+    android:name="com.blank.feature.home.DetailArticleFragment">
+    <deepLink app:uri="app://newsapp/detail" />
+    <argument
+        android:name="newsItem"
+        app:argType="com.blank.core.model.NewsItem" />
+</fragment>
 ```
 
-When adding new features, register a deep link URI in `nav_graph.xml` and navigate to it from other feature modules using `NavDeepLinkRequest`.
+### Rules
+
+1. **All destinations register deep links** — enables external navigation and testing
+2. **Use navigation extensions** — call `navigateDeepLink()`, `navigateWithParcelable()`, or `navigateWithArgs()` from `:core`
+3. **URI pattern consistent** — `app://newsapp/{destination}` for all destinations
+4. **No `<action>` elements** — navigation goes through deep links or resource IDs directly
 
 ---
 

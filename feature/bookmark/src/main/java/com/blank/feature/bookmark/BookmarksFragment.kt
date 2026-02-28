@@ -3,6 +3,7 @@ package com.blank.feature.bookmark
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.blank.core.extensions.navigateWithParcelable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blank.core.base.BaseFragment
 import com.blank.core.base.UiState
@@ -58,10 +59,11 @@ class BookmarksFragment : BaseFragment<FragmentBookmarksBinding>(FragmentBookmar
     }
 
     private fun navigateToDetail(newsItem: NewsItem) {
-        val bundle = Bundle().apply {
-            putParcelable(ARG_NEWS_ITEM, newsItem)
-        }
-        findNavController().navigate(com.blank.core.R.id.detailArticleFragment, bundle)
+        findNavController().navigateWithParcelable(
+            destinationId = com.blank.core.R.id.detailArticleFragment,
+            key = ARG_NEWS_ITEM,
+            value = newsItem,
+        )
     }
 
     private fun setupRecyclerView() {

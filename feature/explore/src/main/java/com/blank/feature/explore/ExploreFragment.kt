@@ -7,6 +7,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.blank.core.extensions.navigateWithParcelable
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blank.core.base.BaseFragment
@@ -199,10 +200,11 @@ class ExploreFragment : BaseFragment<FragmentExploreBinding>(FragmentExploreBind
     }
 
     private fun navigateToDetail(newsItem: NewsItem) {
-        val bundle = Bundle().apply {
-            putParcelable(ARG_NEWS_ITEM, newsItem)
-        }
-        findNavController().navigate(com.blank.core.R.id.detailArticleFragment, bundle)
+        findNavController().navigateWithParcelable(
+            destinationId = com.blank.core.R.id.detailArticleFragment,
+            key = ARG_NEWS_ITEM,
+            value = newsItem,
+        )
     }
 
     companion object {
