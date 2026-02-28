@@ -17,4 +17,13 @@ interface NewsApiService {
         @Query("pageSize") pageSize: Int? = null,
         @Query("page") page: Int? = null,
     ): NetworkResponse<BaseResponse<ArticleDto>, ErrorResponse>
+
+    @GET("everything")
+    suspend fun getEverything(
+        @Query("q") query: String,
+        @Query("pageSize") pageSize: Int? = null,
+        @Query("page") page: Int? = null,
+        @Query("language") language: String? = "en",
+        @Query("sortBy") sortBy: String? = "publishedAt",
+    ): NetworkResponse<BaseResponse<ArticleDto>, ErrorResponse>
 }

@@ -1,3 +1,6 @@
 <resources>
     <string name="explore_title">Explore</string>
+    <string name="search_news_hint">Search</string>
+    <string name="search_for_news">No data found</string>
+    <string name="search_empty_subtitle">Try another keyword</string>
 </resources>

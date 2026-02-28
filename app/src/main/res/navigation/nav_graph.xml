@@ -29,19 +29,27 @@
         tools:layout="@layout/fragment_detail_article">
         <argument
             android:name="newsItem"
-            app:argType="com.blank.feature.home.model.NewsItem" />
+            app:argType="com.blank.core.model.NewsItem" />
     </fragment>
 
     <fragment
         android:id="@+id/exploreFragment"
         android:name="com.blank.feature.explore.ExploreFragment"
         android:label="Explore"
-        tools:layout="@layout/fragment_explore" />
+        tools:layout="@layout/fragment_explore">
+        <action
+            android:id="@+id/action_exploreFragment_to_detailArticleFragment"
+            app:destination="@id/detailArticleFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/bookmarksFragment"
         android:name="com.blank.feature.bookmark.BookmarksFragment"
         android:label="Bookmarks"
-        tools:layout="@layout/fragment_bookmarks" />
+        tools:layout="@layout/fragment_bookmarks">
+        <action
+            android:id="@+id/action_bookmarksFragment_to_detailArticleFragment"
+            app:destination="@id/detailArticleFragment" />
+    </fragment>
 
 </navigation>

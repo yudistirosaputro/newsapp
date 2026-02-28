@@ -8,7 +8,7 @@
     <string name="bookmark">Bookmark</string>
     <string name="news_image">News Image</string>
     <string name="breaking_news">Breaking News</string>
-    <string name="recommended_for_you">Recommended for You</string>
+    <string name="recommended_for_you">Recommended Tech info for You</string>
 
     <!-- Categories -->
     <string name="category_all">All</string>
@@ -33,4 +33,6 @@
     <string name="sort_most_popular">Most Popular</string>
     <string name="sort_most_relevant">Most Relevant</string>
     <string name="apply_filters">Apply Filters</string>
+    <string name="offline_message">You are offline. Showing cached articles.</string>
+    <string name="no_articles">No articles available</string>
 </resources>
