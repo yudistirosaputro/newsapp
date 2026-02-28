@@ -17,9 +17,6 @@
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <deepLink app:uri="app://newsapp/home" />
-        <action
-            android:id="@+id/action_homeFragment_to_detailArticleFragment"
-            app:destination="@id/detailArticleFragment" />
     </fragment>
 
     <fragment
@@ -27,6 +24,7 @@
         android:name="com.blank.feature.home.DetailArticleFragment"
         android:label="Article Detail"
         tools:layout="@layout/fragment_detail_article">
+        <deepLink app:uri="app://newsapp/detail" />
         <argument
             android:name="newsItem"
             app:argType="com.blank.core.model.NewsItem" />
@@ -38,9 +36,6 @@
         android:label="Explore"
         tools:layout="@layout/fragment_explore">
         <deepLink app:uri="app://newsapp/explore" />
-        <action
-            android:id="@+id/action_exploreFragment_to_detailArticleFragment"
-            app:destination="@id/detailArticleFragment" />
     </fragment>
 
     <fragment
@@ -48,9 +43,7 @@
         android:name="com.blank.feature.bookmark.BookmarksFragment"
         android:label="Bookmarks"
         tools:layout="@layout/fragment_bookmarks">
-        <action
-            android:id="@+id/action_bookmarksFragment_to_detailArticleFragment"
-            app:destination="@id/detailArticleFragment" />
+        <deepLink app:uri="app://newsapp/bookmarks" />
     </fragment>
 
 </navigation>
