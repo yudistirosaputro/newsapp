@@ -9,6 +9,7 @@ import com.blank.core.extensions.collectWithLifecycle
 import com.blank.feature.home.databinding.FragmentDetailArticleBinding
 import com.blank.core.model.NewsItem
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class DetailArticleFragment :
@@ -27,7 +28,6 @@ class DetailArticleFragment :
         } ?: throw IllegalArgumentException("NewsItem argument is required")
 
         viewModel.setArticle(newsItem)
-        setupToolbar()
         setupViews()
         setupClickListeners()
     }
@@ -38,23 +38,12 @@ class DetailArticleFragment :
         }
     }
 
-    private fun setupToolbar() {
-        binding.apply {
-            toolbar.setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
-            collapsingToolbar.title = newsItem.source
-        }
-    }
-
     private fun setupViews() {
         binding.apply {
             tvTitle.text = newsItem.title
-            tvDescription.text = newsItem.description
             tvContent.text = newsItem.content
-            tvSource.text = newsItem.source
-            tvTime.text = newsItem.timeAgo
-            chipCategory.text = newsItem.category
+            tvMetaInfo.text = "${newsItem.source} • ${newsItem.timeAgo}"
+
             ivArticleImage.load(newsItem.urlToImage) {
                 placeholder(R.drawable.ic_placeholder)
                 error(R.drawable.ic_placeholder)
@@ -64,9 +53,38 @@ class DetailArticleFragment :
     }
 
     private fun setupClickListeners() {
-        binding.fabBookmark.setOnClickListener {
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.btnBookmark.setOnClickListener {
             viewModel.toggleBookmark()
         }
+
+        binding.btnShare.setOnClickListener {
+            shareArticle()
+        }
+
+        binding.btnReadFullArticle.setOnClickListener {
+            openFullArticle()
+        }
+    }
+
+    private fun shareArticle() {
+        val shareIntent = android.content.Intent().apply {
+            action = android.content.Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(android.content.Intent.EXTRA_TITLE, newsItem.title)
+            putExtra(android.content.Intent.EXTRA_TEXT, "${newsItem.title}\n\n${newsItem.url}")
+        }
+        startActivity(android.content.Intent.createChooser(shareIntent, getString(R.string.share)))
+    }
+
+    private fun openFullArticle() {
+        val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+            data = newsItem.url.toUri()
+        }
+        startActivity(intent)
     }
 
     private fun updateBookmarkIcon(isBookmarked: Boolean) {
@@ -75,7 +93,7 @@ class DetailArticleFragment :
         } else {
             R.drawable.ic_bookmark_outline
         }
-        binding.fabBookmark.setImageResource(iconRes)
+        binding.btnBookmark.setImageResource(iconRes)
     }
 
     companion object {
