@@ -22,4 +22,5 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
     implementation(libs.coil)
+    implementation(libs.androidx.swiperefreshlayout)
 }

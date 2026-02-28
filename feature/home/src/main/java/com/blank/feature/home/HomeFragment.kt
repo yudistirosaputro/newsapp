@@ -1,85 +1,122 @@
 package com.blank.feature.home
 
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.blank.core.base.BaseFragment
-import com.blank.core.constants.NewsCategory
 import com.blank.core.extensions.collectWithLifecycle
-import com.blank.feature.home.adapter.BreakingNewsAdapter
+import com.blank.core.extensions.gone
+import com.blank.core.extensions.visible
 import com.blank.feature.home.adapter.RecommendedNewsAdapter
 import com.blank.feature.home.databinding.FragmentHomeBinding
-import com.blank.feature.home.model.NewsItem
+import com.blank.core.model.NewsItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private val viewModel: HomeViewModel by viewModels()
-
-    private lateinit var breakingNewsAdapter: BreakingNewsAdapter
     private lateinit var recommendedNewsAdapter: RecommendedNewsAdapter
 
     override fun onViewReady(savedInstanceState: Bundle?) {
         setupAdapters()
         setupRecyclerViews()
-        setupCategoryChips()
+        setupSwipeRefresh()
     }
 
     override fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.topHeadlines.collectLatest { pagingData ->
-                    recommendedNewsAdapter.submitData(pagingData)
-                }
+            viewModel.topHeadlines.collectLatest { pagingData ->
+                recommendedNewsAdapter.submitData(pagingData)
             }
         }
 
-        collectWithLifecycle(viewModel.isLoading) { isLoading ->
-            // TODO: Show/hide loading indicator
+        viewLifecycleOwner.lifecycleScope.launch {
+            recommendedNewsAdapter.loadStateFlow
+                .distinctUntilChangedBy { it.refresh }
+                .collectLatest { loadStates ->
+                    val refresh = loadStates.refresh
+                    handleRefreshState(refresh)
+                }
         }
 
-        collectWithLifecycle(viewModel.error) { errorMessage ->
-            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            recommendedNewsAdapter.loadStateFlow
+                .distinctUntilChangedBy { it.append }
+                .collectLatest { loadStates ->
+                    val append = loadStates.append
+                    if (append is LoadState.Error && append.error is IOException) {
+                        viewModel.clearOfflineState()
+                        binding.tvOfflineBanner.visible()
+                    }
+                }
+        }
+
+        collectWithLifecycle(viewModel.isOffline) { isOffline ->
+            binding.tvOfflineBanner.visibility =
+                if (isOffline) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun handleRefreshState(refresh: LoadState) = with(binding) {
+        swipeRefreshLayout.isRefreshing = refresh is LoadState.Loading
+
+        when (refresh) {
+            is LoadState.Loading -> {
+                if (recommendedNewsAdapter.itemCount == 0) {
+                    progressIndicator.visible()
+                    recommendedNewsSection.gone()
+                    tvEmptyState.gone()
+                }
+            }
+
+            is LoadState.Error -> {
+                progressIndicator.gone()
+                val isOffline = refresh.error is IOException
+
+                if (recommendedNewsAdapter.itemCount > 0) {
+                    recommendedNewsSection.visible()
+                    tvEmptyState.gone()
+                    if (isOffline) tvOfflineBanner.visible()
+                } else {
+                    recommendedNewsSection.gone()
+                    tvEmptyState.visible()
+                    tvEmptyState.text = if (isOffline) {
+                        getString(R.string.offline_message)
+                    } else {
+                        refresh.error.message ?: getString(R.string.no_articles)
+                    }
+                }
+            }
+
+            is LoadState.NotLoading -> {
+                progressIndicator.gone()
+
+                if (recommendedNewsAdapter.itemCount == 0) {
+                    recommendedNewsSection.gone()
+                    tvEmptyState.visible()
+                    tvEmptyState.text = getString(R.string.no_articles)
+                } else {
+                    recommendedNewsSection.visible()
+                    tvEmptyState.gone()
+                }
+            }
         }
     }
 
     private fun setupAdapters() {
-        breakingNewsAdapter = BreakingNewsAdapter(
-            onItemClick = { newsItem ->
-                navigateToDetail(newsItem)
-            },
-            onBookmarkClick = { newsItem ->
-                viewModel.toggleBookmark(newsItem)
-            }
-        )
-
         recommendedNewsAdapter = RecommendedNewsAdapter(
-            onItemClick = { newsItem ->
-                navigateToDetail(newsItem)
-            },
-            onBookmarkClick = { newsItem ->
-                viewModel.toggleBookmark(newsItem)
-            }
+            onItemClick = { newsItem -> navigateToDetail(newsItem) },
+            onBookmarkClick = { newsItem -> viewModel.toggleBookmark(newsItem) }
         )
-
-        recommendedNewsAdapter.addLoadStateListener { loadState ->
-            val errorState = loadState.source.refresh as? LoadState.Error
-                ?: loadState.source.append as? LoadState.Error
-                ?: loadState.source.prepend as? LoadState.Error
-            errorState?.let {
-                Toast.makeText(requireContext(), "Error: ${it.error.localizedMessage}", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun navigateToDetail(newsItem: NewsItem) {
@@ -90,16 +127,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun setupRecyclerViews() {
-        binding.rvBreakingNews.apply {
-            adapter = breakingNewsAdapter
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                RecyclerView.HORIZONTAL,
-                false
-            )
-            setHasFixedSize(true)
-        }
-
         binding.rvRecommendedNews.apply {
             adapter = recommendedNewsAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -108,23 +135,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private fun setupCategoryChips() {
-        val chipCategoryMap = mapOf(
-            R.id.chipAll to null,
-            R.id.chipBusiness to NewsCategory.BUSINESS,
-            R.id.chipEntertainment to NewsCategory.ENTERTAINMENT,
-            R.id.chipGeneral to NewsCategory.GENERAL,
-            R.id.chipHealth to NewsCategory.HEALTH,
-            R.id.chipScience to NewsCategory.SCIENCE,
-            R.id.chipSports to NewsCategory.SPORTS,
-            R.id.chipTechnology to NewsCategory.TECHNOLOGY,
-        )
-
-        binding.chipGroupCategories.setOnCheckedStateChangeListener { _, checkedIds ->
-            if (checkedIds.isNotEmpty()) {
-                val category = chipCategoryMap[checkedIds[0]]
-                viewModel.setCategory(category)
-            }
+    private fun setupSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.clearOfflineState()
+            recommendedNewsAdapter.refresh()
         }
     }
 }

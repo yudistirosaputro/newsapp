@@ -5,7 +5,7 @@ import com.blank.core.base.BaseViewModel
 import com.blank.domain.model.ArticleModel
 import com.blank.domain.usecase.ToggleBookmarkUseCase
 import com.blank.domain.repository.BookmarkRepository
-import com.blank.feature.home.model.NewsItem
+import com.blank.core.model.NewsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

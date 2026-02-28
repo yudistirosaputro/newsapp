@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.blank.feature.home.R
 import com.blank.feature.home.databinding.ItemNewsArticleBinding
-import com.blank.feature.home.model.NewsItem
+import com.blank.core.model.NewsItem
 
 class RecommendedNewsAdapter(
     private val onItemClick: (NewsItem) -> Unit,
@@ -36,13 +36,13 @@ class RecommendedNewsAdapter(
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    getItem(position)?.let { onItemClick(it) }
+                    getItem(position)?.let(onItemClick)
                 }
             }
             binding.btnBookmark.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    getItem(position)?.let { onBookmarkClick(it) }
+                    getItem(position)?.let(onBookmarkClick)
                 }
             }
         }

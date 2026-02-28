@@ -11,14 +11,14 @@ class GetTopHeadlinesUseCase @Inject constructor(
 ) {
 
     operator fun invoke(
-        country: String? = "us",
-        category: String? = null,
-        query: String? = null,
+        country: String = "us",
+        category: String = "technology",
+        onOfflineFallback: () -> Unit = {},
     ): Flow<PagingData<ArticleModel>> {
-        return newsRepository.getTopHeadlines(
+        return newsRepository.getTopHeadlinesPaged(
             country = country,
             category = category,
-            query = query,
+            onOfflineFallback = onOfflineFallback,
         )
     }
 }

@@ -17,6 +17,7 @@ class ArticleEntityMapper : BaseListMapper<ArticleEntity, ArticleModel> {
             urlToImage = from.urlToImage,
             publishedAt = from.publishedAt,
             content = from.content,
+            isBookmarked = from.isBookmarked,
         )
     }
 }

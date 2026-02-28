@@ -7,7 +7,7 @@ import coil.load
 import com.blank.core.base.BaseFragment
 import com.blank.core.extensions.collectWithLifecycle
 import com.blank.feature.home.databinding.FragmentDetailArticleBinding
-import com.blank.feature.home.model.NewsItem
+import com.blank.core.model.NewsItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

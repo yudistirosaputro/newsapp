@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.buildlogic.android.library)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {

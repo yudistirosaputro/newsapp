@@ -27,6 +27,7 @@ room = "2.8.4"
 paging = "3.4.1"
 ksp = "2.3.5"
 splashscreen = "1.0.1"
+swiperefreshlayout = "1.1.0"
 coil = "2.7.0"
 
 [libraries]
@@ -82,6 +83,9 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+
+# SwipeRefreshLayout
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 # Coil
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }

@@ -1,5 +1,6 @@
 package com.blank.data.local.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
@@ -11,6 +12,9 @@ interface ArticleDao {
 
     @Query("SELECT * FROM articles WHERE isTopHeadline = 1 ORDER BY cachedAt DESC")
     fun getTopHeadlines(): Flow<List<ArticleEntity>>
+
+    @Query("SELECT * FROM articles WHERE isTopHeadline = 1 ORDER BY cachedAt DESC")
+    fun getTopHeadlinesPaging(): PagingSource<Int, ArticleEntity>
 
     @Upsert
     suspend fun upsertAll(articles: List<ArticleEntity>)
@@ -29,4 +33,7 @@ interface ArticleDao {
 
     @Query("SELECT url FROM articles WHERE isBookmarked = 1")
     fun getBookmarkedUrls(): Flow<List<String>>
+
+    @Query("SELECT * FROM articles WHERE isTopHeadline = 1 ORDER BY cachedAt DESC LIMIT :limit OFFSET :offset")
+    suspend fun getTopHeadlinesPage(offset: Int, limit: Int): List<ArticleEntity>
 }
