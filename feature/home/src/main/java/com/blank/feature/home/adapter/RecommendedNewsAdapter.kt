@@ -52,7 +52,7 @@ class RecommendedNewsAdapter(
                 tvNewsTitle.text = item.title
                 tvSource.text = item.source
                 tvTime.text = item.timeAgo
-                chipCategory.text = item.category
+                tvNewsDescription.text = item.description
 
                 btnBookmark.setImageResource(
                     if (item.isBookmarked) {

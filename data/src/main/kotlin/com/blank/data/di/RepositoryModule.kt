@@ -1,9 +1,11 @@
 package com.blank.data.di
 
+import com.blank.data.connectivity.AndroidConnectivityObserver
 import com.blank.data.repository.BookmarkRepositoryImpl
 import com.blank.data.repository.NewsRepositoryImpl
 import com.blank.data.repository.SearchRepositoryImpl
 import com.blank.domain.repository.BookmarkRepository
+import com.blank.domain.repository.ConnectivityObserver
 import com.blank.domain.repository.NewsRepository
 import com.blank.domain.repository.SearchRepository
 import dagger.Binds
@@ -33,4 +35,10 @@ abstract class RepositoryModule {
     abstract fun bindSearchRepository(
         searchRepositoryImpl: SearchRepositoryImpl,
     ): SearchRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindConnectivityObserver(
+        androidConnectivityObserver: AndroidConnectivityObserver,
+    ): ConnectivityObserver
 }

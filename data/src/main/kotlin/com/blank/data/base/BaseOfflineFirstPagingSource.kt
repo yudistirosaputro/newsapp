@@ -7,10 +7,8 @@ import com.blank.data.helper.NetworkResponse
 /**
  * Generic PagingSource with offline-first caching strategy.
  *
- * - Pages 1..[maxCachedPages]: fetched from API and cached locally.
- *   On network failure, falls back to local cache.
- * - Pages beyond [maxCachedPages]: fetched from API only.
- *   On network failure, returns [LoadResult.Error].
+ * All fetched pages are cached locally. On network failure, falls back
+ * to local cache for any previously loaded page.
  *
  * Subclasses provide:
  * - [executeApi]       — the Retrofit call for a given page/size
@@ -22,8 +20,6 @@ import com.blank.data.helper.NetworkResponse
 abstract class BaseOfflineFirstPagingSource<DTO : Any, Model : Any>(
     private val offlineCallback: (() -> Unit)? = null,
 ) : PagingSource<Int, Model>() {
-
-    open val maxCachedPages: Int = DEFAULT_MAX_CACHED_PAGES
 
     abstract suspend fun executeApi(
         page: Int,
@@ -40,18 +36,11 @@ abstract class BaseOfflineFirstPagingSource<DTO : Any, Model : Any>(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Model> {
         val page = params.key ?: STARTING_PAGE
-        val isCacheable = page <= maxCachedPages
 
         return when (val response = executeApi(page, PAGE_SIZE)) {
-            is NetworkResponse.Success -> handleSuccess(response.data, page, isCacheable)
+            is NetworkResponse.Success -> handleSuccess(response.data, page)
 
-            is NetworkResponse.ErrorNetwork -> {
-                if (isCacheable) {
-                    handleOfflineFallback(page, response.error)
-                } else {
-                    LoadResult.Error(response.error)
-                }
-            }
+            is NetworkResponse.ErrorNetwork -> handleOfflineFallback(page, response.error)
 
             is NetworkResponse.ErrorApi -> LoadResult.Error(
                 Exception("API Error ${response.code}: ${response.error.message}")
@@ -66,14 +55,11 @@ abstract class BaseOfflineFirstPagingSource<DTO : Any, Model : Any>(
     private suspend fun handleSuccess(
         body: BaseResponse<DTO>,
         page: Int,
-        isCacheable: Boolean,
     ): LoadResult<Int, Model> {
         val items = mapItems(body.articles)
 
-        if (isCacheable) {
-            if (page == STARTING_PAGE) clearCache()
-            cacheItems(items)
-        }
+        if (page == STARTING_PAGE) clearCache()
+        cacheItems(items)
 
         val totalResults = body.totalResults
         val nextKey = if (items.isEmpty() || page * PAGE_SIZE >= totalResults) {
@@ -98,7 +84,7 @@ abstract class BaseOfflineFirstPagingSource<DTO : Any, Model : Any>(
 
         return if (cached.isNotEmpty()) {
             offlineCallback?.invoke()
-            val nextKey = if (cached.size < PAGE_SIZE || page >= maxCachedPages) {
+            val nextKey = if (cached.size < PAGE_SIZE) {
                 null
             } else {
                 page + 1
@@ -123,6 +109,5 @@ abstract class BaseOfflineFirstPagingSource<DTO : Any, Model : Any>(
     companion object {
         const val STARTING_PAGE = 1
         const val PAGE_SIZE = 5
-        private const val DEFAULT_MAX_CACHED_PAGES = 3
     }
 }

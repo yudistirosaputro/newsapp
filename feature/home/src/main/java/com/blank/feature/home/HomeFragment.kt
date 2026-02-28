@@ -49,18 +49,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            recommendedNewsAdapter.loadStateFlow
-                .distinctUntilChangedBy { it.append }
-                .collectLatest { loadStates ->
-                    val append = loadStates.append
-                    if (append is LoadState.Error && append.error is IOException) {
-                        viewModel.clearOfflineState()
-                        binding.tvOfflineBanner.visible()
-                    }
-                }
-        }
-
         collectWithLifecycle(viewModel.isOffline) { isOffline ->
             binding.tvOfflineBanner.visibility =
                 if (isOffline) View.VISIBLE else View.GONE
@@ -143,8 +131,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun setupSwipeRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.clearOfflineState()
-            recommendedNewsAdapter.refresh()
+            if (viewModel.isOffline.value) {
+                binding.swipeRefreshLayout.isRefreshing = false
+            } else {
+                recommendedNewsAdapter.refresh()
+            }
         }
     }
 }
