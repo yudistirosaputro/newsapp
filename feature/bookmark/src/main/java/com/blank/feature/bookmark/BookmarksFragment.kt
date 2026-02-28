@@ -61,7 +61,7 @@ class BookmarksFragment : BaseFragment<FragmentBookmarksBinding>(FragmentBookmar
         val bundle = Bundle().apply {
             putParcelable(ARG_NEWS_ITEM, newsItem)
         }
-        findNavController().navigate(R.id.detailArticleFragment, bundle)
+        findNavController().navigate(com.blank.core.R.id.detailArticleFragment, bundle)
     }
 
     private fun setupRecyclerView() {

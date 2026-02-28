@@ -114,7 +114,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         val bundle = Bundle().apply {
             putParcelable(DetailArticleFragment.ARG_NEWS_ITEM, newsItem)
         }
-        findNavController().navigate(R.id.detailArticleFragment, bundle)
+        findNavController().navigate(com.blank.core.R.id.detailArticleFragment, bundle)
     }
 
     private fun setupRecyclerViews() {

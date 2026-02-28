@@ -38,4 +38,8 @@
     <string name="refresh">Refresh</string>
     <string name="offline">Offline</string>
     <string name="loading_more_news">Loading more news…</string>
+    <string name="author">Author</string>
+    <string name="share">Share</string>
+    <string name="read_full_article">Read Full Article</string>
+    <string name="related_stories">Related Stories</string>
 </resources>

@@ -1,6 +1,23 @@
 <resources>
     <string name="explore_title">Explore</string>
-    <string name="search_news_hint">Search</string>
-    <string name="search_for_news">No data found</string>
-    <string name="search_empty_subtitle">Try another keyword</string>
+    <string name="search_news_hint">Search for news…</string>
+    <string name="search_for_news">Search for news</string>
+    <string name="search_empty_subtitle">Find articles on topics you care about</string>
+    <string name="offline_message">You are offline</string>
+    <string name="back">Back</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
+    <string name="offline">Offline</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="news_image">News Image</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="no_results">No results</string>
+    <string name="no_results_title">No news found</string>
+    <string name="no_results_subtitle">We could not find any articles matching your search. Try adjusting your keywords or exploring different topics.</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="browse_trending">Browse Trending Topics</string>
+    <string name="offline_search_subtitle">Connect to the internet to search for articles.</string>
+    <string name="results_header">Top results for \"%1$s\"</string>
+    <string name="retry">Retry</string>
 </resources>

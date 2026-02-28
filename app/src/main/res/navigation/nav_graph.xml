@@ -23,7 +23,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/detailArticleFragment"
+        android:id="@id/detailArticleFragment"
         android:name="com.blank.feature.home.DetailArticleFragment"
         android:label="Article Detail"
         tools:layout="@layout/fragment_detail_article">
@@ -37,6 +37,7 @@
         android:name="com.blank.feature.explore.ExploreFragment"
         android:label="Explore"
         tools:layout="@layout/fragment_explore">
+        <deepLink app:uri="app://newsapp/explore" />
         <action
             android:id="@+id/action_exploreFragment_to_detailArticleFragment"
             app:destination="@id/detailArticleFragment" />

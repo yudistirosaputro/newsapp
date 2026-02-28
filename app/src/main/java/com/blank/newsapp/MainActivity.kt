@@ -44,7 +44,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.splashFragment, R.id.detailArticleFragment -> {
+                R.id.splashFragment, com.blank.core.R.id.detailArticleFragment -> {
                     binding.bottomNavigationContainer.visibility = View.GONE
                     // Extend fragment to bottom when bottom nav is hidden
                     (binding.navHostFragment.layoutParams as androidx.constraintlayout.widget.ConstraintLayout.LayoutParams).apply {
